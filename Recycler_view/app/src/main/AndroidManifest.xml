@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecyclerView">
         <activity
-            android:name=".contect_row"
+            android:name=".AddUpdatets"
+            android:exported="false" />
+        <activity
+            android:name=".ContectRow"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

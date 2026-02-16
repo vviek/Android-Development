@@ -3,8 +3,11 @@ package com.sourabh.recyclerview;
 public class ContectModel {
     public int img;
 
+
+
     public String  contect;
     public String entercontect;
+
 
          public ContectModel(int img,String contectt,String entercontectt){
 
@@ -13,5 +16,6 @@ public class ContectModel {
                        this.entercontect=entercontectt;
 
          }
+
 
 }

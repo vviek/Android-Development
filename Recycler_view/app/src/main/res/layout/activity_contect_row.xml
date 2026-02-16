@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".contect_row">
+    tools:context=".ContectRow">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardcontect"
