@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+     <!--//step2-->
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"/>
+
+
+
+
+   <!-- //step 1 ,step 3 = make menu file in resourse file and make item want to show in navigation bar
+    //make menu directry and inside this make one file and add items
+    //step 4 = after this use menu attribute-->
+      <com.google.android.material.bottomnavigation.BottomNavigationView
+          app:menu="@menu/navigation_icon"
+          android:id="@+id/bnview"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

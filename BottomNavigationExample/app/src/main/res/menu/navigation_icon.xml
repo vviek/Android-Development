@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+// three attributer are imp ,id,title,icone
+    <item android:id="@+id/home"
+          android:title="HOME"
+        android:icon="@drawable/home"/>
+
+    <item android:id="@+id/search"
+        android:title="SEARCH"
+        android:icon="@drawable/search"/>
+
+    <item android:id="@+id/utility"
+        android:title="Utility"
+        android:icon="@drawable/utility"/>
+
+    <item android:id="@+id/contectus"
+        android:title="Contect"
+        android:icon="@drawable/contectus"/>
+
+    <item android:id="@+id/profile"
+        android:title="Profile"
+        android:icon="@drawable/profile"/>
+
+
+
+</menu>
