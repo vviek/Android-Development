@@ -47,10 +47,17 @@ public class MyDB extends SQLiteOpenHelper {
 
         db.execSQL(" CREATE TABLE "+ Table_contect + "(" + key_id +  "integer," + key_name  + "text," + key_number + "text" + " );" );
 
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+
+        // this method is called when to updatedatabase
+        db.execSQL("drop table if exists " + Table_contect);
+        //calling oncreate method to again bulid table
+        onCreate(db);
 
     }
 }
