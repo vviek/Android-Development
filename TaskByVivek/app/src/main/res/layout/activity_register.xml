@@ -33,6 +33,15 @@
             android:inputType="textPersonName"
             android:layout_marginBottom="12dp" />
 
+        <EditText
+            android:id="@+id/etusername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="#B3FFFFFF"
+            android:hint="Enter username"
+            android:inputType="textPersonName"
+            android:layout_marginBottom="12dp" />
+
         <!-- Email -->
         <EditText
             android:id="@+id/etEmail"

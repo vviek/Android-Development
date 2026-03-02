@@ -2,10 +2,12 @@ package com.example.taskbyvivek;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +15,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Calendar;
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class register_activity extends AppCompatActivity {
 
      Button btnClear,btnSubmit;
     EditText etName, etEmail, etDOB, etPassword, etMobile, etAddress;
+    EditText etusername;
     CheckBox cbAdmin;
 
 
@@ -31,6 +47,8 @@ public class register_activity extends AppCompatActivity {
         btnSubmit=findViewById(R.id.btnSubmit);
 
         etName = findViewById(R.id.etName);
+        etusername = findViewById(R.id.etusername);
+
         etEmail = findViewById(R.id.etEmail);
         etDOB = findViewById(R.id.etDOB);
         etPassword = findViewById(R.id.etPassword);
@@ -44,6 +62,7 @@ public class register_activity extends AppCompatActivity {
             public void onClick(View v) {
 
                 etName.setText("");
+                etusername.setText("");
                 etEmail.setText("");
                 etDOB.setText("");
                 etPassword.setText("");
@@ -99,7 +118,133 @@ public class register_activity extends AppCompatActivity {
 
 
 
-        // 
+
+btnSubmit.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+
+
+        // api
+
+      /*  http://localhost/learn_app_api/register.php
+        {
+            "name": "Sagar Lurmi",
+                "email_id": "sagar@gmail.com",
+                "password": "123456",
+                "username": "sagar123",
+                "is_admin": 0,
+                "date_of_birth": "1995-05-15",
+                "mobile": "9876543210",
+                "address": "Bhopal, India"
+        }
+
+        */
+
+        //1
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.6/learn_app_api/")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+
+
+
+
+        //2 create interface
+        // 3
+        RetroFitInterface apisrever = retrofit.create(RetroFitInterface.class);
+
+
+
+
+        // 4
+        String name = etName.getText().toString();
+        String email = etEmail.getText().toString();
+        String isadmin = cbAdmin.getText().toString();
+        String dob = etDOB.getText().toString();
+        String password = etPassword.getText().toString();
+        String usernme=etusername.getText().toString();
+        String number= etMobile.getText().toString();
+        String address = etAddress.getText().toString();
+
+
+        // format of json given by api developer
+              /*  http://localhost/learn_app_api/register.php
+        {
+            "name": "Sagar Lurmi",
+                "email_id": "sagar@gmail.com",
+                "password": "123456",
+                "username": "sagar123",
+                "is_admin": 0,
+                "date_of_birth": "1995-05-15",
+                "mobile": "9876543210",
+                "address": "Bhopal, India"
+        }
+
+        */
+
+        //5
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name",name);
+            jsonObject.put("email_id",email);
+            jsonObject.put("admain",isadmin);
+            jsonObject.put("date_of_birth",dob);
+            jsonObject.put("password",password);
+            jsonObject.put("username",usernme);
+            jsonObject.put("mobile",number);
+            jsonObject.put("address",address);
+
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+//6
+        String jsonString = jsonObject.toString();
+        RequestBody body = RequestBody.create(jsonString, MediaType.parse("application/json"));
+
+
+//7
+        Call<ResponseBody> Call = apisrever.registeruse(body);
+
+
+        //8
+        // now  below the api response code
+        Call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    String finalresponse = response.body().string();
+
+                    Log.e("result ","api response"+finalresponse );
+                    Toast.makeText(register_activity.this,finalresponse,Toast.LENGTH_LONG).show();
+
+
+                } catch (IOException e) {
+                    Log.e("trycatch","problem on trycatch"+e);
+                    throw new RuntimeException(e);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                Log.e("fail","api fail"+t);
+
+            }
+        });
+
+
+
+    }
+});
+
+
 
     }
 }
