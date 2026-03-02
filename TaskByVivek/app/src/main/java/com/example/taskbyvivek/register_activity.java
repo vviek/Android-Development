@@ -1,6 +1,7 @@
 package com.example.taskbyvivek;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -124,8 +125,16 @@ btnSubmit.setOnClickListener(new View.OnClickListener() {
     public void onClick(View v) {
 
 
+        if (etName.getText().toString().isEmpty() || etusername.getText().toString().isEmpty() || etEmail.getText().toString().isEmpty() ||
+                etDOB.getText().toString().isEmpty() || etPassword.getText().toString().isEmpty() || etMobile.getText().toString().isEmpty()
+                || etAddress.getText().toString().isEmpty()) {
 
-        // api
+            Toast.makeText(register_activity.this, "Please fill all details", Toast.LENGTH_SHORT).show();
+
+        } else {
+
+
+            // api
 
       /*  http://localhost/learn_app_api/register.php
         {
@@ -141,36 +150,31 @@ btnSubmit.setOnClickListener(new View.OnClickListener() {
 
         */
 
-        //1
+            //1
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.6/learn_app_api/")
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build();
-
-
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://192.168.1.6/learn_app_api/")
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .build();
 
 
-
-        //2 create interface
-        // 3
-        RetroFitInterface apisrever = retrofit.create(RetroFitInterface.class);
-
+            //2 create interface
+            // 3
+            RetroFitInterface apisrever = retrofit.create(RetroFitInterface.class);
 
 
+            // 4
+            String name = etName.getText().toString();
+            String email = etEmail.getText().toString();
+            boolean isadmin = cbAdmin.isChecked();
+            String dob = etDOB.getText().toString();
+            String password = etPassword.getText().toString();
+            String usernme = etusername.getText().toString();
+            String number = etMobile.getText().toString();
+            String address = etAddress.getText().toString();
 
-        // 4
-        String name = etName.getText().toString();
-        String email = etEmail.getText().toString();
-        String isadmin = cbAdmin.getText().toString();
-        String dob = etDOB.getText().toString();
-        String password = etPassword.getText().toString();
-        String usernme=etusername.getText().toString();
-        String number= etMobile.getText().toString();
-        String address = etAddress.getText().toString();
 
-
-        // format of json given by api developer
+            // format of json given by api developer
               /*  http://localhost/learn_app_api/register.php
         {
             "name": "Sagar Lurmi",
@@ -185,62 +189,86 @@ btnSubmit.setOnClickListener(new View.OnClickListener() {
 
         */
 
-        //5
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name",name);
-            jsonObject.put("email_id",email);
-            jsonObject.put("admain",isadmin);
-            jsonObject.put("date_of_birth",dob);
-            jsonObject.put("password",password);
-            jsonObject.put("username",usernme);
-            jsonObject.put("mobile",number);
-            jsonObject.put("address",address);
+            //5
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("name", name);
+                jsonObject.put("email_id", email);
+                jsonObject.put("admain", isadmin);
+                jsonObject.put("date_of_birth", dob);
+                jsonObject.put("password", password);
+                jsonObject.put("username", usernme);
+                jsonObject.put("mobile", number);
+                jsonObject.put("address", address);
 
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
 
 //6
-        String jsonString = jsonObject.toString();
-        RequestBody body = RequestBody.create(jsonString, MediaType.parse("application/json"));
+            String jsonString = jsonObject.toString();
+            RequestBody body = RequestBody.create(jsonString, MediaType.parse("application/json"));
 
 
 //7
-        Call<ResponseBody> Call = apisrever.registeruse(body);
+            Call<ResponseBody> Call = apisrever.registeruse(body);
 
 
-        //8
-        // now  below the api response code
-        Call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            //8
+            // now  below the api response code
+            Call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                try {
-                    String finalresponse = response.body().string();
+                    try {
+                        String finalresponse = response.body().string();
+                        Log.e("result ", "api response" + finalresponse);
 
-                    Log.e("result ","api response"+finalresponse );
-                    Toast.makeText(register_activity.this,finalresponse,Toast.LENGTH_LONG).show();
+                        JSONObject jsonObject1 = new JSONObject( finalresponse);
+                        boolean status1 = jsonObject1.getBoolean("status");
+                        if(status1) {
+
+                            Toast.makeText(register_activity.this, "Registation is Success", Toast.LENGTH_LONG).show();
+
+                            etName.setText("");
+                            etusername.setText("");
+                            etEmail.setText("");
+                            etDOB.setText("");
+                            etPassword.setText("");
+                            etMobile.setText("");
+                            etAddress.setText("");
+                            cbAdmin.setChecked(false);
 
 
-                } catch (IOException e) {
-                    Log.e("trycatch","problem on trycatch"+e);
-                    throw new RuntimeException(e);
+                            Intent inexthome;
+                            inexthome = new Intent(register_activity.this, login_activity.class);
+                            startActivity(inexthome);
+
+
+                        }else {
+
+                            Toast.makeText(register_activity.this, "user all ready exit , plz change the gmail ", Toast.LENGTH_LONG).show();
+
+
+                        }
+                    } catch (Exception e) {
+                        Log.e("trycatch", "problem on trycatch" + e);
+                        throw new RuntimeException(e);
+                    }
+
                 }
 
-            }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("fail", "api fail" + t);
 
-                Log.e("fail","api fail"+t);
-
-            }
-        });
+                }
+            });
 
 
-
+        }
     }
 });
 

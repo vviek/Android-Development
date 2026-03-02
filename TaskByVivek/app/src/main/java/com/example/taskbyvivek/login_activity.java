@@ -51,84 +51,111 @@ public class login_activity  extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                // http://localhost/learn_app_api/login.php
-                //{
-                //    "username":"vivek123",
-                //    "password":"123456"
-                //}
-                //192.168.1.6
-
-                //1  Get input values
-                String username = etUsername.getText().toString();
-                String passwords = etPassword.getText().toString();
 
 
-                //2   Create JSON
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("username",username);
-                    jsonObject.put( "password", passwords);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
+                       if(etUsername.getText().toString().isEmpty()&&etPassword.getText().toString().isEmpty()){
+                           Toast.makeText(login_activity.this,"plz enter your username and password ",Toast.LENGTH_SHORT).show();
+                       return ;
+                       }
+                       if (etUsername.getText().toString().isEmpty()) {
+                           Toast.makeText(login_activity.this,"plz enter your user username ",Toast.LENGTH_SHORT).show();
+                        return;
+                       }
 
-                //3
-                String jsonString = jsonObject.toString();
+                       if (etPassword.getText().toString().isEmpty())  {
 
-                //4  conver to requestbody
-                RequestBody requestBody = RequestBody.create(jsonString, MediaType.parse("application/json"));
+                           Toast.makeText(login_activity.this,"plz enter your username  and passwor ",Toast.LENGTH_SHORT).show();
+                       return;
+                       }
+                     // http://localhost/learn_app_api/login.php
+                       //{
+                       //    "username":"vivek123",
+                       //    "password":"123456"
+                       //}
+                       //192.168.1.6
 
-
-
-                // 5 Create Retrofit instance
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.6/learn_app_api/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-
-
-                //6 connecting interface
-                RetrofitLoginInterface apiserver = retrofit.create( RetrofitLoginInterface.class);
+                       //1  Get input values
+                       String username = etUsername.getText().toString();
+                       String passwords = etPassword.getText().toString();
 
 
-                //7 Call API
-                Call<ResponseBody> call = apiserver.postRawJson(requestBody);
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                       //2   Create JSON
+                       JSONObject jsonObject = new JSONObject();
+                       try {
+                           jsonObject.put("username", username);
+                           jsonObject.put("password", passwords);
+                       } catch (JSONException e) {
+                           throw new RuntimeException(e);
+                       }
 
-                        try {
-                            String result = response.body().string();
-                            Log.e("res", "onResponse:returnvalue "+result );
-                            JSONObject finalobj = new JSONObject(result);
-                            String status = finalobj.getString("status");
-                            Log.e("final", "finalresponse:true or false "+status );
-                            boolean isStstus = Boolean.parseBoolean(status);
+                       //3
+                       String jsonString = jsonObject.toString();
 
-                            if(isStstus){
-                                Intent tohome;
-                                tohome = new Intent(login_activity.this, Home_activity.class);
-                                startActivity(tohome);
-
-                            }
+                       //4  conver to requestbody
+                       RequestBody requestBody = RequestBody.create(jsonString, MediaType.parse("application/json"));
 
 
-                        } catch (Exception e) {
-                            Log.e("catch", "onResponse:returnvalue "+e );
-                            throw new RuntimeException(e);
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("api", "onResponse:api fail "+t );
-
-                    }
-                });
+                       // 5 Create Retrofit instance
+                       Retrofit retrofit = new Retrofit.Builder()
+                               .baseUrl("http://192.168.1.6/learn_app_api/")
+                               .addConverterFactory(GsonConverterFactory.create())
+                               .build();
 
 
-            }
+                       //6 connecting interface
+                       RetrofitLoginInterface apiserver = retrofit.create(RetrofitLoginInterface.class);
+
+
+                       //7 Call API
+                       Call<ResponseBody> call = apiserver.postRawJson(requestBody);
+                       call.enqueue(new Callback<ResponseBody>() {
+                           @Override
+                           public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+
+                               // json parsing
+                               try {
+                                   String result = response.body().string();
+                                   Log.e("res", "onResponse:returnvalue " + result);
+                                   JSONObject finalobj = new JSONObject(result);
+                                   String status = finalobj.getString("status");
+                                   JSONObject jsonObjects = finalobj.getJSONObject("user_details");
+                                   int checkboxStatus = jsonObjects.getInt("is_admin");
+                                   Log.e("checkbox", "finalresponse:check box ststus " + checkboxStatus);
+                                   boolean isStstus = Boolean.parseBoolean(status);
+
+
+                                   // login intents
+                                   if (isStstus) {
+
+                                       if (checkboxStatus == 1) {
+                                           Intent isAdmin;
+                                           isAdmin = new Intent(login_activity.this, Admin_activity.class);
+                                           startActivity(isAdmin);
+                                       } else {
+                                           Intent tohome;
+                                           tohome = new Intent(login_activity.this, Home_activity.class);
+                                           startActivity(tohome);
+                                       }
+                                   }
+
+
+                               } catch (Exception e) {
+                                   Log.e("catch", "onResponse:returnvalue " + e);
+                                   throw new RuntimeException(e);
+                               }
+
+                           }
+
+                           @Override
+                           public void onFailure(Call<ResponseBody> call, Throwable t) {
+                               Log.e("api", "onResponse:api fail " + t);
+
+                           }
+                       });
+                   }
+
+            
         });
 
 

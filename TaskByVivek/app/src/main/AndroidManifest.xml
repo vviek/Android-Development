@@ -15,6 +15,9 @@
         android:theme="@style/Theme.TaskByVivek"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Admin_activity"
+            android:exported="false" />
+        <activity
             android:name=".Home_activity"
             android:exported="false" />
         <activity
