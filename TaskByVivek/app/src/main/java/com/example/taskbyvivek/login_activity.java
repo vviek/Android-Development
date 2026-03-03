@@ -1,5 +1,6 @@
 package com.example.taskbyvivek;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,7 +34,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class login_activity  extends AppCompatActivity {
 
-    TextView etUsername,etPassword;
+    TextView etUsername,etPassword,tvForgotPassword,tvRegister;
     Button btnLogin;
 
     @Override
@@ -44,16 +45,27 @@ public class login_activity  extends AppCompatActivity {
         etUsername=findViewById(R.id.etUsername);
         etPassword=findViewById(R.id.etPassword);
         btnLogin=findViewById(R.id.btnLogin);
+        tvForgotPassword=findViewById(R.id.tvForgotPassword);
+        tvRegister=findViewById(R.id.tvRegister);
 
 
+       // cretae new account button
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent gotoregisterpage;
+                gotoregisterpage = new Intent(login_activity.this, register_activity.class);
+                startActivity(gotoregisterpage);
+                finish();
+            }
+        });
+
+        // for login button
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
-
-                       if(etUsername.getText().toString().isEmpty()&&etPassword.getText().toString().isEmpty()){
+                       if(etUsername.getText().toString().isEmpty() && etPassword.getText().toString().isEmpty()){
                            Toast.makeText(login_activity.this,"plz enter your username and password ",Toast.LENGTH_SHORT).show();
                        return ;
                        }
@@ -64,7 +76,7 @@ public class login_activity  extends AppCompatActivity {
 
                        if (etPassword.getText().toString().isEmpty())  {
 
-                           Toast.makeText(login_activity.this,"plz enter your username  and passwor ",Toast.LENGTH_SHORT).show();
+                           Toast.makeText(login_activity.this,"plz enter your  password ",Toast.LENGTH_SHORT).show();
                        return;
                        }
                      // http://localhost/learn_app_api/login.php
@@ -119,25 +131,33 @@ public class login_activity  extends AppCompatActivity {
                                    Log.e("res", "onResponse:returnvalue " + result);
                                    JSONObject finalobj = new JSONObject(result);
                                    String status = finalobj.getString("status");
-                                   JSONObject jsonObjects = finalobj.getJSONObject("user_details");
-                                   int checkboxStatus = jsonObjects.getInt("is_admin");
-                                   Log.e("checkbox", "finalresponse:check box ststus " + checkboxStatus);
                                    boolean isStstus = Boolean.parseBoolean(status);
 
 
                                    // login intents
                                    if (isStstus) {
+                                       JSONObject jsonObjects = finalobj.getJSONObject("user_details");
+                                       int checkboxStatus = jsonObjects.getInt("is_admin");
+                                       Log.e("checkbox", "finalresponse:check box ststus " + checkboxStatus);
 
                                        if (checkboxStatus == 1) {
                                            Intent isAdmin;
                                            isAdmin = new Intent(login_activity.this, Admin_activity.class);
                                            startActivity(isAdmin);
+                                           finish();
                                        } else {
                                            Intent tohome;
                                            tohome = new Intent(login_activity.this, Home_activity.class);
                                            startActivity(tohome);
+                                           finish();
                                        }
+                                   }else{
+
+                                       Log.e("notlogin","login ststus"+isStstus);
+                                       Toast.makeText(login_activity.this,"plz register first",Toast.LENGTH_SHORT).show();
+
                                    }
+
 
 
                                } catch (Exception e) {
@@ -156,6 +176,41 @@ public class login_activity  extends AppCompatActivity {
                    }
 
 
+        });
+
+
+        // for forget password
+
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog dialog = new Dialog(login_activity.this);
+                dialog.setContentView(R.layout.email_dialog);
+
+               Button btnCancel;
+               btnCancel=dialog.findViewById(R.id.btnCancel);
+
+       // for cancle button
+                btnCancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+
+                    }
+                });
+          // for sentcode
+                Button btnSendCode;
+                btnSendCode=dialog.findViewById(R.id.btnSendCode);
+
+                btnSendCode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(login_activity.this,"Code is send to your email id",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                dialog.show();
+            }
         });
 
 

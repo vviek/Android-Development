@@ -50,6 +50,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 
+
+
+    // for tool bar
+    implementation("androidx.appcompat:appcompat:1.6.1")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
