@@ -50,7 +50,7 @@ public class login_activity  extends AppCompatActivity {
 
 
        // cretae new account button
-        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+        tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent gotoregisterpage;
