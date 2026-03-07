@@ -16,24 +16,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-               // to use database and and insert value in table
-                // make  the variable and take the referencer of database
+            // callig that function i make in mydb calsss to add value in table
 
-         // to use data base from the activity firt make the object of batabase class
+            MyDB db = new MyDB(this);
+            db.AddDataInTable(1,"sourabh","8827467391");
+            db.AddDataInTable(2,"neetin"," 7439587071");
+            db.AddDataInTable(3,"vivek","9993821365");
 
-        //imp   ===  for using database first open database  in last close database
-
-        // open   database
-        MyDB myDBobj = new MyDB(this);
-        SQLiteDatabase database = myDBobj.getWritableDatabase();    // in database calss on wite this SqliteDatabase database = this.getwiteable or this.getreadable
-
-
-
-        // set of operation want to perform like
-        // query you want to perform
-        //database.insert()   that type of operatin
-
-        //close database
-        database.close();
     }
 }

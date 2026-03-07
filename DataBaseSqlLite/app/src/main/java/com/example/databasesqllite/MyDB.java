@@ -1,6 +1,7 @@
 package com.example.databasesqllite;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -45,10 +46,12 @@ public class MyDB extends SQLiteOpenHelper {
         //  SQL query = create table tablename (c1 datatype ,c2 datatpe,c3 datatype)
         // space after create tabele
 
-        db.execSQL(" CREATE TABLE "+ Table_contect + "(" + key_id +  "integer," + key_name  + "text," + key_number + "text" + " );" );
 
+
+        db.execSQL(" CREATE TABLE "+ Table_contect  + "(" + key_id  +  "integer  PRIMARY KEY ," + key_name  + "text," + key_number + "text" + " );" );
 
     }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -59,5 +62,23 @@ public class MyDB extends SQLiteOpenHelper {
         //calling oncreate method to again bulid table
         onCreate(db);
 
+    }
+
+    public void AddDataInTable(int id,String name,String number){
+
+        // open database
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // create object of ContentValues class and put connection to put value
+        ContentValues value = new ContentValues();
+        value.put(key_id,id);
+        value.put(key_name,name);
+        value.put(key_number,number);
+
+        // defining in which table value has to insert
+        db.insert(DATABASE_NAME,null,value);
+
+        // close the database
+        db.close();
     }
 }
