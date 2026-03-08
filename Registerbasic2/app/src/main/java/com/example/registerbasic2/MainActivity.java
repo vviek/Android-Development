@@ -1,9 +1,6 @@
-package com.example.sqliteoperationsexample1;
+package com.example.registerbasic2;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,16 +13,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-              MyDb myDbObject = new MyDb(MainActivity.this);
-              myDbObject.insertvalueInTable(1,"B.tech",9.8);
-              myDbObject.insertvalueInTable(2,"B.com",8.3);
-             myDbObject.insertvalueInTable(3,"B.sc",7.3);
-
-
-
-        //last step
-
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 }

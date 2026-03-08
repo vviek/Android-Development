@@ -12,14 +12,14 @@ public class MyDb extends SQLiteOpenHelper {
 
     //1
     private static final String DATABASE_NAME="student";
+
     private static final  int DataBase_Version = 1;
 
 
     //2
-
-    public static  final String  Table_Details ="details";
-    public static final String key_RollNo ="Roll no ";
-    public static final String  key_course=" course ";
+    public static  final String  Table_Details = "details";
+    public static final String key_RollNo ="Rollno";
+    public static final String  key_course="course";
     public static final String key_Cgpa ="cgpa";
 
 
@@ -40,17 +40,18 @@ public class MyDb extends SQLiteOpenHelper {
         db.execSQL(  "CREATE TABLE " + Table_Details + " (" +
                 key_RollNo+ " INTEGER PRIMARY KEY , " +
                 key_course + " TEXT NOT NULL, " +
-                key_Cgpa + " TEXT UNIQUE);");
+                key_Cgpa + " REAL);");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " + Table_Details);
+        onCreate(db);
 
     }
     // To insert value in databse make function
-    public void insertvalueInTable(int rollno,String course,double cgpa){
+    public void insertvalueInTable(int rollno,String course, double cgpa){
 
         // open database
         SQLiteDatabase sqdb = this.getWritableDatabase();
