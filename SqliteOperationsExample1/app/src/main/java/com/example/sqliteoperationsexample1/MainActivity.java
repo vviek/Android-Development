@@ -22,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
               myDbObject.insertvalueInTable(1,"B.tech",9.8);
               myDbObject.insertvalueInTable(2,"B.com",8.3);
              myDbObject.insertvalueInTable(3,"B.sc",7.3);
+             myDbObject.insertvalueInTable(4,"B.sc",5.3);
+             myDbObject.insertvalueInTable(5,"B.sc",3.3);
+
 
 
 
