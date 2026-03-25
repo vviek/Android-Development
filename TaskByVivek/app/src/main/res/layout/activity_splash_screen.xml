@@ -9,9 +9,13 @@
     tools:context=".splash_screen">
 
 
-    <ImageView
+  <!-- <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/splashscreen"/>
+        android:src="@drawable/splashscreen"/>-->
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="hello"/>
 
 </LinearLayout>
