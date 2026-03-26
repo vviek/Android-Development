@@ -10,14 +10,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save data in sahredprefernce"
-        android:textSize="20sp"
+        android:text="Login"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="#000000"
         android:layout_marginBottom="40dp"/>
 
     <EditText
-        android:id="@+id/etUsername2"
+        android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Username"
@@ -26,7 +26,7 @@
         android:background="@android:drawable/editbox_background"/>
 
     <EditText
-        android:id="@+id/etPassword2"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Password"
@@ -34,12 +34,15 @@
         android:padding="12dp"
         android:layout_marginBottom="30dp"
         android:background="@android:drawable/editbox_background"/>
-    
-    
-    
+
     <Button
-        android:layout_width=""
-        android:layout_height=""
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:background="#FF5722"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="15dp"/>
 
 
 
