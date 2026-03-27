@@ -48,7 +48,13 @@ public class MyDB extends SQLiteOpenHelper {
 
 
 
-        db.execSQL(" CREATE TABLE "+ Table_contect  + "(" + key_id  +  "integer  PRIMARY KEY ," + key_name  + "text," + key_number + "text" + " );" );
+        db.execSQL("CREATE TABLE " + Table_contect + " (" +
+                key_id + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                key_name + " TEXT, " +
+                key_number + " TEXT" +
+                ");");
+
+
 
     }
 
@@ -64,21 +70,36 @@ public class MyDB extends SQLiteOpenHelper {
 
     }
 
-    public void AddDataInTable(int id,String name,String number){
+    public void AddDataInTable(String name,String number){
 
-        // open database
+        // Open writable database
         SQLiteDatabase db = this.getWritableDatabase();
+
+        // Clear the table before inserting fresh data
+        db.execSQL("DELETE FROM " + Table_contect); // remove all rows
+        db.execSQL("DELETE FROM sqlite_sequence WHERE name='" + Table_contect + "'"); // reset AUTOINCREMENT
+
 
         // create object of ContentValues class and put connection to put value
         ContentValues value = new ContentValues();
-        value.put(key_id,id);
         value.put(key_name,name);
         value.put(key_number,number);
 
         // defining in which table value has to insert
-        db.insert(DATABASE_NAME,null,value);
+        db.insert(Table_contect ,null,value);
 
         // close the database
         db.close();
     }
+
+    public void DetletDataFromTable(){
+        // Open writable database
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + Table_contect); // remove all rows
+        db.execSQL("DELETE FROM sqlite_sequence WHERE name='" + Table_contect + "'"); // reset AUTOINCREMENT
+        db.close();
+    }
+
+
+
 }
